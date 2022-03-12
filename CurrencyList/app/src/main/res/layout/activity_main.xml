@@ -47,7 +47,7 @@
                 android:text="@string/demo_load_button_text"
                 android:textColor="@color/white"
                 android:layout_marginRight="16dp"
-                android:onClick="onLoadClickListener"/>
+                android:onClick="@{onLoadClickListener::onClick}"/>
 
             <Button
                 android:id="@+id/sortBtn"
@@ -57,7 +57,7 @@
                 android:text="@string/demo_sort_button_text"
                 android:textColor="@color/white"
                 android:background="@drawable/primary_button"
-                android:onClick="onSortClickListener"/>
+                android:onClick="@{onSortClickListener::onClick}"/>
         </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>

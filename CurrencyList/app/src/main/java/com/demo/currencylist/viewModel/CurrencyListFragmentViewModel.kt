@@ -10,9 +10,9 @@ class CurrencyListFragmentViewModel : ViewModel(){
     var currencyInfoList: ArrayList<CurrencyInfo>? = null
     val publishListEvent = PublishSubject.create<ArrayList<CurrencyInfo>>()
 
-    fun updateList(list: List<CurrencyInfo>){
+    fun updateList(list: ArrayList<CurrencyInfo>){
         Log.d("CurrencyListViewModel", "updateList")
-        currencyInfoList = ArrayList(list)
+        currencyInfoList = list
         publishListEvent.onNext(currencyInfoList!!)
     }
 }

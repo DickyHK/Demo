@@ -17,7 +17,7 @@ import io.reactivex.rxkotlin.addTo
 
 class CurrencyListFragment : Fragment() {
 
-    interface Listener{
+    interface CurrencyListListener{
         fun onClick(position : Int)
     }
 
@@ -26,7 +26,7 @@ class CurrencyListFragment : Fragment() {
     lateinit var viewModel: CurrencyListFragmentViewModel
     lateinit var disposable: CompositeDisposable
 
-    var onClickListener: Listener? = null
+    var onClickListener: CurrencyListListener? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -70,7 +70,7 @@ class CurrencyListFragment : Fragment() {
         disposable.clear()
     }
 
-    fun updateList(list: List<CurrencyInfo>){
+    fun updateList(list: ArrayList<CurrencyInfo>){
         Log.d("CurrencyListFragment", "updateList")
         viewModel.updateList(list)
     }

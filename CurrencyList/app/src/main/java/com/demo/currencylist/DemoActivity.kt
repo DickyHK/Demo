@@ -7,28 +7,60 @@ import android.util.AttributeSet
 import android.util.Log
 import android.view.View
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.ViewModelProvider
 import com.demo.currencylist.databinding.ActivityMainBinding
 import com.demo.currencylist.fragment.CurrencyListFragment
+import com.demo.currencylist.viewModel.CurrencyListFragmentViewModel
+import com.demo.currencylist.viewModel.DemoActivityViewModel
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.rxkotlin.addTo
 
 class DemoActivity : AppCompatActivity() {
 
     lateinit var binding : ActivityMainBinding
     lateinit var fragment : CurrencyListFragment
+    lateinit var viewModel: DemoActivityViewModel
+    lateinit var disposable: CompositeDisposable
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
 
+        viewModel = ViewModelProvider(this).get(DemoActivityViewModel::class.java)
+        disposable = CompositeDisposable()
+
+        initView()
+        subscribe()
+    }
+
+    private fun initView(){
+        binding.setOnLoadClickListener {
+            Log.d("DemoActivity", "loadClick")
+            viewModel.loadCurrencyList()
+        }
+
+        binding.setOnSortClickListener {
+            Log.d("DemoActivity", "sortClick")
+            viewModel.sortCurrencyList()
+        }
+
         fragment = CurrencyListFragment()
+        fragment.onClickListener = object: CurrencyListFragment.CurrencyListListener {
+            override fun onClick(position: Int) {
+                viewModel.selectListItem(position)
+            }
+        }
         supportFragmentManager.beginTransaction().replace(R.id.container, fragment).commit()
     }
 
-    fun onLoadClickListener(view: View) {
-        Log.d("DemoActivity", "loadClick")
+    private fun subscribe(){
+        viewModel.publishListEvent.subscribe {
+            fragment.updateList(it)
+        }.addTo(disposable)
     }
 
-    fun onSortClickListener(view: View) {
-        Log.d("DemoActivity", "sortClick")
-
+    override fun onDestroy() {
+        super.onDestroy()
+        disposable.clear()
     }
 }

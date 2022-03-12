@@ -29,6 +29,13 @@ class CurrencyListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         val itemViewModel = CurrencyListItemViewModel()
         when(holder){
             is ItemHolder -> {
+                itemViewModel.name.set(data[position].name)
+                itemViewModel.symbol.set(data[position].symbol)
+                data[position].name?.let {
+                    if(it.isNotEmpty()){
+                        itemViewModel.icon.set(data[position].name!!.get(0).toString())
+                    }
+                }
                 holder.binding.viewModel = itemViewModel
                 holder.binding.setOnClickListener {
                     onItemClickListener?.onItemClicked(position)
