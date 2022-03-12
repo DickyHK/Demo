@@ -16,7 +16,6 @@ class CurrencyListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     var data = ArrayList<CurrencyInfo>()
     var onItemClickListener: OnItemClickListener? = null
 
-
     fun setData(data : List<CurrencyInfo>){
         this.data = ArrayList(data)
         notifyDataSetChanged()
