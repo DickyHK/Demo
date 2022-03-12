@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">CurrencyList</string>
+    <string name="demo_load_button_text">LOAD</string>
+    <string name="demo_sort_button_text">SORT</string>
+</resources>
