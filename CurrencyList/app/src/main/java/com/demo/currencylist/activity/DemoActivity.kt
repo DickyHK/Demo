@@ -1,16 +1,13 @@
-package com.demo.currencylist
+package com.demo.currencylist.activity
 
-import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.AttributeSet
 import android.util.Log
-import android.view.View
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
+import com.demo.currencylist.R
 import com.demo.currencylist.databinding.ActivityMainBinding
 import com.demo.currencylist.fragment.CurrencyListFragment
-import com.demo.currencylist.viewModel.CurrencyListFragmentViewModel
 import com.demo.currencylist.viewModel.DemoActivityViewModel
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.addTo
