@@ -29,6 +29,7 @@ class DemoActivity : AppCompatActivity() {
 
         initView()
         subscribe()
+        viewModel.loadCurrencyList()
     }
 
     private fun initView(){
