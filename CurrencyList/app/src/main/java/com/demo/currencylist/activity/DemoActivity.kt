@@ -7,6 +7,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import com.demo.currencylist.R
 import com.demo.currencylist.databinding.ActivityMainBinding
+import com.demo.currencylist.ext.throttleClicks
 import com.demo.currencylist.fragment.CurrencyListFragment
 import com.demo.currencylist.viewModel.DemoActivityViewModel
 import io.reactivex.disposables.CompositeDisposable
@@ -31,15 +32,22 @@ class DemoActivity : AppCompatActivity() {
     }
 
     private fun initView(){
-        binding.setOnLoadClickListener {
+        binding.viewModel = viewModel
+        binding.lifecycleOwner = this
+
+        binding.loadBtn.throttleClicks().subscribe({
             Log.d("DemoActivity", "loadClick")
             viewModel.loadCurrencyList()
-        }
+        }, {
+            it.printStackTrace()
+        }).addTo(disposable)
 
-        binding.setOnSortClickListener {
+        binding.sortBtn.throttleClicks().subscribe({
             Log.d("DemoActivity", "sortClick")
             viewModel.sortCurrencyList()
-        }
+        }, {
+            it.printStackTrace()
+        }).addTo(disposable)
 
         fragment = CurrencyListFragment()
         fragment.onClickListener = object: CurrencyListFragment.CurrencyListListener {

@@ -7,15 +7,11 @@
 
     <data>
         <variable
-            name="onLoadClickListener"
-            type="android.view.View.OnClickListener" />
-
-        <variable
-            name="onSortClickListener"
-            type="android.view.View.OnClickListener" />
+            name="viewModel"
+            type="com.demo.currencylist.viewModel.DemoActivityViewModel" />
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
@@ -24,9 +20,9 @@
         <FrameLayout
             android:id="@+id/container"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toTopOf="@id/footer"/>
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_above="@id/footer"/>
 
         <LinearLayout
             android:id="@+id/footer"
@@ -36,7 +32,7 @@
             android:paddingVertical="8dp"
             android:paddingHorizontal="16dp"
             android:background="@color/colorBackground"
-            app:layout_constraintBottom_toBottomOf="parent">
+            android:layout_alignParentBottom="true">
 
             <Button
                 android:id="@+id/loadBtn"
@@ -47,7 +43,7 @@
                 android:text="@string/demo_load_button_text"
                 android:textColor="@color/white"
                 android:layout_marginRight="16dp"
-                android:onClick="@{onLoadClickListener::onClick}"/>
+                android:enabled="@{viewModel.enableBtn}"/>
 
             <Button
                 android:id="@+id/sortBtn"
@@ -57,8 +53,8 @@
                 android:text="@string/demo_sort_button_text"
                 android:textColor="@color/white"
                 android:background="@drawable/primary_button"
-                android:onClick="@{onSortClickListener::onClick}"/>
+                android:enabled="@{viewModel.enableBtn}"/>
         </LinearLayout>
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </RelativeLayout>
 </layout>
