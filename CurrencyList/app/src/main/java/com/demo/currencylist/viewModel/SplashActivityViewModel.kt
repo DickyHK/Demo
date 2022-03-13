@@ -4,6 +4,7 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import com.demo.currencylist.dataModel.CurrencyInfo
 import com.demo.currencylist.repo.CurrencyRepository
+import com.demo.currencylist.room.RoomDb
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.addTo

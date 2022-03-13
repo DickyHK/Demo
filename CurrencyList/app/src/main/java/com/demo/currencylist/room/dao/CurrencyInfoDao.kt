@@ -9,7 +9,10 @@ interface CurrencyInfoDao {
     fun getAll(): List<CurrencyInfo>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertAll(vararg infos: List<CurrencyInfo>)
+    fun insertAll(infos: List<CurrencyInfo>)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insert(vararg infos: CurrencyInfo)
 
     @Delete
     fun delete(info: CurrencyInfo)

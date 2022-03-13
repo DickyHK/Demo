@@ -23,7 +23,7 @@ object CurrencyRepository {
                 val gson = Gson()
                 val type = object : TypeToken<List<CurrencyInfo>>() {}.type
                 val currencies = gson.fromJson<List<CurrencyInfo>>(jsonString, type)
-                RoomDb.getInstance(application).currencyInfoDao().insertAll(currencies)
+                RoomDb.getInstance().currencyInfoDao().insertAll(currencies)
                 emitter.onNext(Unit)
                 emitter.onComplete()
             } catch (e: JSONException) {
@@ -33,8 +33,16 @@ object CurrencyRepository {
         }
     }
 
-    fun getCurrencyList(context: Context): ArrayList<CurrencyInfo> {
-        val list = ArrayList<CurrencyInfo>()
-        return list
+    fun getCurrencyList(): Observable<ArrayList<CurrencyInfo>> {
+        return Observable.create { emitter ->
+            try {
+                val list = RoomDb.getInstance().currencyInfoDao().getAll()
+                emitter.onNext(ArrayList(list))
+                emitter.onComplete()
+            } catch (e: JSONException) {
+                e.printStackTrace()
+                emitter.onError(Throwable("Cannot get currency list from db"))
+            }
+        }
     }
 }

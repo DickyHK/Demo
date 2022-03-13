@@ -8,16 +8,15 @@ object RoomDb {
 
     private lateinit var instance: AppDatabase
 
-    fun getInstance(application: Application) : AppDatabase{
-        Log.d("RoomDb","get db instance")
-        if(this::instance.isInitialized){
-            return instance
-        }
-        Log.d("RoomDb","init db instance")
+    fun initDB(application: Application){
         instance = Room.databaseBuilder(
             application.applicationContext,
             AppDatabase::class.java, "demoDb"
         ).build()
+    }
+
+    fun getInstance() : AppDatabase{
+        Log.d("RoomDb","get db instance")
         return instance
     }
 
