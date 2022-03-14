@@ -8,6 +8,9 @@ interface CurrencyInfoDao {
     @Query("SELECT * FROM currencyinfo")
     fun getAll(): List<CurrencyInfo>
 
+    @Query("SELECT * FROM currencyinfo order by name")
+    fun sortAll(): List<CurrencyInfo>
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertAll(infos: List<CurrencyInfo>)
 

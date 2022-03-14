@@ -45,4 +45,17 @@ object CurrencyRepository {
             }
         }
     }
+
+    fun getSortedCurrencyList(): Observable<ArrayList<CurrencyInfo>> {
+        return Observable.create { emitter ->
+            try {
+                val list = RoomDb.getInstance().currencyInfoDao().sortAll()
+                emitter.onNext(ArrayList(list))
+                emitter.onComplete()
+            } catch (e: JSONException) {
+                e.printStackTrace()
+                emitter.onError(Throwable("Cannot get currency list from db"))
+            }
+        }
+    }
 }

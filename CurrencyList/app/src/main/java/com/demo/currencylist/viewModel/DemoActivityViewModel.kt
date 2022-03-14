@@ -26,6 +26,7 @@ class DemoActivityViewModel(application: Application) : AndroidViewModel(applica
     var currencyInfoList: ArrayList<CurrencyInfo>? = null
     var enableBtn: MutableLiveData<Boolean> = MutableLiveData<Boolean>(true)
     val publishListEvent = PublishSubject.create<ArrayList<CurrencyInfo>>()
+    var asyncTriggered = false
 
     fun selectListItem(position: Int){
         Log.d("DemoActivityViewModel.selectListItem:", position.toString())
@@ -35,36 +36,39 @@ class DemoActivityViewModel(application: Application) : AndroidViewModel(applica
     }
 
     fun loadCurrencyList(){
-        CurrencyRepository.getCurrencyList()
-            .subscribeOn(Schedulers.newThread())
-            .observeOn(AndroidSchedulers.mainThread())
-            .doOnSubscribe { enableBtn.value = false }
-            .doOnTerminate { enableBtn.value = true }
-            .subscribe({
-                currencyInfoList = it
-                currencyInfoList?.let {
-                    publishListEvent.onNext(it)
-                }
-            }, {
-                it.printStackTrace()
-            }).addTo(disposable)
+        if(!asyncTriggered){
+            CurrencyRepository.getCurrencyList()
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnSubscribe { asyncTriggered = true }
+                .doOnTerminate { asyncTriggered = false }
+                .subscribe({
+                    currencyInfoList = it
+                    currencyInfoList?.let {
+                        publishListEvent.onNext(it)
+                    }
+                }, {
+                    it.printStackTrace()
+                }).addTo(disposable)
+        }
     }
 
     fun sortCurrencyList(){
-        CurrencyRepository.getCurrencyList()
-            .subscribeOn(Schedulers.newThread())
-            .observeOn(AndroidSchedulers.mainThread())
-            .doOnSubscribe { enableBtn.value = false }
-            .doOnTerminate { enableBtn.value = true }
-            .subscribe({
-                currencyInfoList = it
-                currencyInfoList?.let {
-                    it.sort()
-                    publishListEvent.onNext(it)
-                }
-            }, {
-                it.printStackTrace()
-            }).addTo(disposable)
+        if(!asyncTriggered) {
+            CurrencyRepository.getSortedCurrencyList()
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnSubscribe { asyncTriggered = true }
+                .doOnTerminate { asyncTriggered = false }
+                .subscribe({
+                    currencyInfoList = it
+                    currencyInfoList?.let {
+                        publishListEvent.onNext(it)
+                    }
+                }, {
+                    it.printStackTrace()
+                }).addTo(disposable)
+        }
     }
 
     override fun onCleared() {
