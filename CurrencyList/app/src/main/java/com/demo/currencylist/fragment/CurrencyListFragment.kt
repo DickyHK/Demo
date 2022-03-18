@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.demo.currencylist.adapter.CurrencyListAdapter
 import com.demo.currencylist.dataModel.CurrencyInfo
 import com.demo.currencylist.databinding.FragmentCurrencyListBinding
-import com.demo.currencylist.viewModel.CurrencyListFragmentViewModel
+import com.demo.currencylist.viewModel.DemoActivityViewModel
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.addTo
 
@@ -23,8 +23,6 @@ class CurrencyListFragment : Fragment() {
 
     lateinit var binding : FragmentCurrencyListBinding
     lateinit var adapter: CurrencyListAdapter
-    lateinit var viewModel: CurrencyListFragmentViewModel
-    lateinit var disposable: CompositeDisposable
 
     var onClickListener: CurrencyListListener? = null
 
@@ -40,10 +38,7 @@ class CurrencyListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel = ViewModelProvider(this).get(CurrencyListFragmentViewModel::class.java)
-        disposable = CompositeDisposable()
         initView()
-        subscribe()
     }
 
 
@@ -59,19 +54,7 @@ class CurrencyListFragment : Fragment() {
         binding.recyclerView.adapter = adapter
     }
 
-    private fun subscribe(){
-        viewModel.publishListEvent.subscribe {
-            adapter.setData(it)
-        }.addTo(disposable)
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        disposable.clear()
-    }
-
-    fun updateList(list: ArrayList<CurrencyInfo>){
-        Log.d("CurrencyListFragment", "updateList")
-        viewModel.updateList(list)
+    fun updateList(list : ArrayList<CurrencyInfo>){
+        adapter.setData(list)
     }
 }

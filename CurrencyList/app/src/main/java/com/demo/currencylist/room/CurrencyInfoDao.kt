@@ -1,4 +1,4 @@
-package com.demo.currencylist.room.dao
+package com.demo.currencylist.room
 
 import androidx.room.*
 import com.demo.currencylist.dataModel.CurrencyInfo

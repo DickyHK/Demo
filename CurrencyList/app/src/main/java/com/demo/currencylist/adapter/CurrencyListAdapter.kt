@@ -5,7 +5,6 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.demo.currencylist.dataModel.CurrencyInfo
 import com.demo.currencylist.databinding.LayoutCurrencyListItemBinding
-import com.demo.currencylist.viewModel.CurrencyListItemViewModel
 
 class CurrencyListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
@@ -26,17 +25,13 @@ class CurrencyListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        val itemViewModel = CurrencyListItemViewModel()
         when(holder){
             is ItemHolder -> {
-                itemViewModel.name.set(data[position].name)
-                itemViewModel.symbol.set(data[position].symbol)
-                data[position].name?.let {
-                    if(it.isNotEmpty()){
-                        itemViewModel.icon.set(data[position].name!!.get(0).toString())
-                    }
+                holder.binding.name.text = data[position].name
+                holder.binding.symbol.text = data[position].symbol
+                if(!data[position].name.isNullOrEmpty()){
+                    holder.binding.icon.text = (data[position].name!![0].toString())
                 }
-                holder.binding.viewModel = itemViewModel
                 holder.binding.setOnClickListener {
                     onItemClickListener?.onItemClicked(position)
                 }
